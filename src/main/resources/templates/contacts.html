@@ -1,0 +1,57 @@
+<html>
+<head>
+    <title>haikarose</title>
+    <script src="../static/jquery.js" type="text/javascript"/></script>
+    <link rel="stylesheet" href="../static/main.css">    
+</head>
+<body>
+
+    <header id="header">
+        <p>Haikarose website</p>
+    </header>
+    <p id="nav-mobile">&#9776; Menu</p>
+    <nav>
+        <ul>
+          <li><a th:href="{/home}" href="home.html">Home</a></li>
+          <li><a href="contact.asp">Android</a></li>
+          <li><a href="about.asp">Java</a></li>
+          <li><a href="default.asp">Projects</a></li>
+          <li><a href="news.asp">Awards</a></li>
+          <li><a th:href="@{/contact}" href="contacts.html">Contacts</a></li>
+          <li><a th:href="@{/log/user}" href="login.html">Login</a></li>
+          
+       </ul>
+    </nav>
+    
+    <div id="container">
+        <aside class='columns'>
+            <h4>This part is for the aside contents</h4>
+            <p>The aside contents will be displayed here</p>
+        </aside>
+        <div id="main" class="columns">
+            
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+            
+        </div>
+        <div id="main" class="columns">
+            
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+            
+        </div>
+    </div>
+
+    
+    <footer>
+        <hr/>
+        <p>&copy;Haikarose in college Collections 2016</p>
+    </footer>
+    
+    <script>
+        $("document").ready(function(){
+          $("#nav-mobile").on("click",function(evt){
+                      $("nav").slideToggle();
+              });
+        });
+    </script>
+</body>
+</html>

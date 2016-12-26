@@ -1,0 +1,183 @@
+<html>
+    <head>
+        <title>publish post</title>
+        <style>
+            
+            
+            .adder{
+                cursor: default;
+                background:#1565C0;
+                min-width:20%;
+                padding: 8px;
+                border-radius: 4px;
+                color:white;
+                font-size: 14px;
+                outline: none;
+                border: none;
+                margin-left: 2px;
+            }
+            
+            .adder:hover{
+                 background:#1565C0;
+            }
+            #remove_icon{
+                background:orange;
+                border-radius: 4px;
+                font-size: 12px;
+                margin: 4px;
+                padding: 4px;
+                cursor: default;
+            }
+            
+            #remove_icon:hover{
+                background: #FFC107;
+            }
+            body{
+                display: flex;
+                margin:0px;
+                padding:0px;
+                background: #fff;
+            }
+            
+            form{ 
+                border-radius: 4px;
+                margin: auto;
+                padding: 20px;
+                font-size: 20px;
+                font-family: sans-serif;
+                border: none;
+                font-family: sans-serif; 
+                width:400px;
+                background:#2196F3;
+            }
+            
+            label{
+                font-size: 20px;
+            }
+            textarea{
+                border: none;
+                resize: none;
+                overflow: hidden;
+                font-family: sans-serif;
+            }
+           
+            
+            .form_row{
+                color: white;
+                display: flex;
+                padding-left: 12px;
+                padding-right: 12px;
+                padding-bottom: 4px;
+                padding-top: 4px;
+            }
+            input{
+                margin: 0;
+                padding: 6px;
+                outline: none;
+                border: none;
+                flex: 1;
+            }
+            
+            label{
+                margin-bottom: 0px;
+                margin-top: 0;
+                margin-right: 6px;
+            }
+            
+            textarea{
+                flex: 1;
+            }
+            
+            #submit, #sub_container{
+                min-width:20%;
+                padding: 8px;
+                color:white;
+                outline: none;
+                border: none;
+                margin-left: 2px;
+            }
+            #submit{
+                text-align: center;
+                background: #0D47A1;
+            }
+            
+            #submit:hover{
+                background:#1565C0;
+            }
+            
+            
+        </style>
+    </head>
+    <body>
+        <form th:action="@{/publish/post}" action="localhost/test.php" method="get"> 
+            <div class="form_row">
+                <label for="poster">Description:</label>
+            </div>
+            <div class="form_row">              
+                <textarea name="description" id="poster"></textarea>
+            </div>
+            <div class="resources_url form_row" id="res_container">
+                <div value="resource" id="ad_resource" class="adder"name="button">(+) Resource</div>
+            </div>
+            <div id="res_con">            
+            </div>
+            <div class="resources_files form_row" id="file_container" >
+                <div value="files" id="ad_file" class="adder" > (+) file</div>
+            </div>
+            <div id="file_con" > </div>
+            
+            <div id="sub_container">
+                <input id="submit" type="submit" value="Publish">
+            </div>
+            
+           
+        </form>
+        
+        <script src="../static/jquery.js" type="text/javascript"></script>
+        <script>  
+            
+            $("document").ready(function(){
+                
+                var url_count=0;
+                var file_count=0;
+                
+                $("#ad_resource").on("click",function(){
+                    var res_element="<div class='form_row'><input id= type='text' name='resource[]' required><p id='remove_icon'>delete</p></div>";
+                    
+                    if(url_count<5){
+                         ++url_count;
+                        $("#res_con").append(res_element);
+                        $("#ad_resource").text("(+) Resource "+url_count+"/5");
+                       
+                    }else if(url_count===5){
+                        $("#ad_resource").html("(+) Resource "+url_count+"/5" +" <span style='color:#FFC107;font-size:14px;'>(limit reached)</span>");                        
+                    }else{
+                         
+                    }                    
+                    
+                });
+                
+                $("#ad_file").on("click",function(){
+                     var file_element="<div class='form_row'><input type='file'> </div>";
+                    alert("hello");
+                    $("#file_con").append(file_element);
+                    
+                });
+                
+                $("body").on("click","#remove_icon",function(){
+                   
+                    if(url_count<=5 && url_count>=0){
+                        --url_count;
+                         $(this).parent(".form_row").remove();     
+                        $("#ad_resource").text("(+) Resource "+url_count+"/5");
+                    }
+                    
+                   
+                });
+                
+            });
+            
+            
+        </script>
+    </body>
+</html>
