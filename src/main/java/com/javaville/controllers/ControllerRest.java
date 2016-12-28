@@ -4,6 +4,7 @@ import com.javaville.daos.PostsDao;
 import com.javaville.daos.UploaderDao;
 import com.javaville.daos.VisiterDao;
 import com.javaville.entities.Category;
+import com.javaville.entities.CategoryItem;
 import com.javaville.entities.Comment;
 import com.javaville.entities.Post;
 import com.javaville.entities.Resource;
@@ -70,26 +71,24 @@ public class ControllerRest {
     
     }
     
-    @RequestMapping("/category")
-    public Category getAllCategory(){
+    @RequestMapping("/category/{name}")
+    public List<Category> getAllCategory(@PathVariable("name") String name){
     
-        Category cat=(Category) categoryDao.findByName("java");        
-        return cat;
+        List<Category> cats=(List<Category>) categoryDao.findAllByName(name);        
+        return cats;
     
     }
     
-    @RequestMapping("/distinct/cat")
-    public Set<Category>  getAllDistCat(){
+    @RequestMapping("/categories/{page}/{items}")
+    public List<Category>  getAllDistCat(@PathVariable("page") int page,@PathVariable("items") int items){
         
          Query querry=entityManager.createQuery("from Category");  
+         querry.setFirstResult(page);
+         querry.setMaxResults(items);
          List<Category> categories=(List<Category>)querry.getResultList();
          
-         Set<Category> categories0=new TreeSet<>();
-         for(Category cat:categories){
-             categories0.add(cat);
-         }
          
-        return categories0;
+        return categories;
     }
     
     @RequestMapping("/sub/cat/{name}")
@@ -98,20 +97,20 @@ public class ControllerRest {
          TypedQuery<Category> querry=entityManager.createQuery("from Category where name=:name",Category.class);  
          querry.setParameter("name",name);
          List<Category> categories=(List<Category>)querry.getResultList();
-         
-         
-        return categories;
+                  
+         return categories;
+        
     }
     
-    @RequestMapping(value="/under/item/{name}/{type}",method=RequestMethod.GET)
-    public List<Category> getSubCatItem(@PathVariable("name") String name,@PathVariable("type") String type){
+    @RequestMapping(value="/catitem/{category}",method=RequestMethod.GET)
+    public List<CategoryItem> getSubCatItem(String name,@PathVariable("category") String category){
         
-         TypedQuery<Category> querry=entityManager.createQuery("from Category where name=:name and type=:type",Category.class);
-         querry.setParameter("name",name);
-         querry.setParameter("type",type);
-         List<Category> categories=(List<Category>)querry.getResultList();
+         Category cat=categoryDao.findByName(category);
          
-         System.out.println(categories.get(0).getPost().get(0).getPoster().getEmail());
+         TypedQuery<CategoryItem> querry=entityManager.createQuery("from CategoryItem where category_id=:id",CategoryItem.class);
+         querry.setParameter("id",cat.getId());
+         List<CategoryItem> categories=(List<CategoryItem>)querry.getResultList();
+         
          
          return categories;
     
@@ -388,13 +387,13 @@ public class ControllerRest {
         List<Category> categories=(List<Category>)categoryDao.findAll();
         List<String> items=new ArrayList<>();
         categories.stream().forEach((cat) -> {
-            items.add(cat.getType());
+           // items.add(cat.getType());
         });
         return items;
     }
     
     
-    @RequestMapping("/insert/category")
+    @RequestMapping(value="/insert/category",method=RequestMethod.POST)
     public void insertIntoCategory(HttpServletRequest request){
         String name=request.getParameter("name");
         String cat_description=request.getParameter("cat_description");
@@ -403,13 +402,11 @@ public class ControllerRest {
         
         Category cat=new Category();
         cat.setName(name);
-        cat.setType(type);
-        cat.setSub_cat_descr(sub_cat_description);
-        cat.setCat_descr(cat_description);
+        cat.setDescription(cat_description);
         categoryDao.save(cat);
     }
     
-    @RequestMapping("/insert/visiter")
+    @RequestMapping(value="/insert/visiter",method=RequestMethod.POST)
     public void insertVisiter(HttpServletRequest request){
         String name=request.getParameter("name");
         String email=request.getParameter("email");
@@ -427,7 +424,7 @@ public class ControllerRest {
         
     }
     
-    @RequestMapping("/insert/admin")
+    @RequestMapping(value="/insert/admin", method=RequestMethod.POST)
     public void insertAdmin(HttpServletRequest request){
         String name=request.getParameter("name");
         String email=request.getParameter("email");

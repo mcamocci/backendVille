@@ -79,7 +79,7 @@ public class Post implements Serializable {
     
     @JsonManagedReference
     @ManyToOne 
-    private Category category;
+    private CategoryItem categoryItem;
     
     @OneToMany(mappedBy="post")
     Collection<Resource> resources=new ArrayList();
@@ -88,8 +88,8 @@ public class Post implements Serializable {
         this.resources.add(resource);
     }
     
-    public void setCategory(Category category){
-        this.category=category;
+    public void setCategory(CategoryItem categoryItem){
+        this.categoryItem=categoryItem;
     }
     
 }

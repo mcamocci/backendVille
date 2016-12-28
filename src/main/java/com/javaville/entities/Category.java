@@ -25,37 +25,31 @@ import javax.persistence.OneToOne;
 @Entity
 public class Category implements Serializable,Comparable{
     
-    private String type;
     private String name;
 
-    public String getCat_descr() {
-        return cat_descr;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCat_descr(String cat_descr) {
-        this.cat_descr = cat_descr;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getSub_cat_descr() {
-        return sub_cat_descr;
-    }
-
-    public void setSub_cat_descr(String sub_cat_descr) {
-        this.sub_cat_descr = sub_cat_descr;
-    }
-    private String cat_descr;
-    private String sub_cat_descr;
+   
+   
+    private String description;
+   
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     
-    @JsonBackReference
-    @OneToMany(mappedBy="category")
-    private List<Post> post=new ArrayList<>();
     
-    public void setPost(Post post){
-        this.post.add(post);
-    }
+    
+    @JsonIgnore
+    @OneToMany(mappedBy="category")
+    private List<CategoryItem> categoryItems=new ArrayList<>();
+    
+   
     
     public void setId(Long id){
         this.id=id;
@@ -69,22 +63,13 @@ public class Category implements Serializable,Comparable{
         return this.id;
     }
     
-    public String getType(){
-        return this.type;
-    }
-    
-    public void setType(String type){
-        this.type=type;
-    }
+   
     
     public String getName(){
         return this.name;
     }
     
-    @JsonIgnore
-    public List<Post> getPost(){
-        return this.post;
-    }
+   
 
     @Override
     public int compareTo(Object o) {
@@ -95,5 +80,13 @@ public class Category implements Serializable,Comparable{
         }
         return 1;
         
+    }
+    
+    public void addCategoryItem(CategoryItem item){
+        this.categoryItems.add(item);
+    }
+    
+    public List<CategoryItem> getCategoryItems(){
+        return this.categoryItems;
     }
 }

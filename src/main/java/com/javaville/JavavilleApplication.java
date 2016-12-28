@@ -1,6 +1,5 @@
 package com.javaville;
 
-import javafx.application.Application;
 import jdk.nashorn.internal.objects.Global;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
