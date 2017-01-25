@@ -19,9 +19,9 @@ public class JavavilleApplication extends SpringBootServletInitializer {
 		SpringApplication.run(JavavilleApplication.class, args);
 	}
         
-        /*
+        
         @Override
         protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(JavavilleApplication.class);
-        }*/
+        }
 }
