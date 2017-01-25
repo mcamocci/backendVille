@@ -15,6 +15,10 @@
         <!-- lookup parent from repository -->
     </parent>
     <properties>
+        <appengine.version>1.9.36</appengine.version>
+        <gcloud.plugin.version>2.0.9.106.v20160420</gcloud.plugin.version>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>

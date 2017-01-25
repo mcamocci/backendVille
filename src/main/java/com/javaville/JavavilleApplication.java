@@ -20,8 +20,8 @@ public class JavavilleApplication extends SpringBootServletInitializer {
 	}
         
         
-        @Override
+        /* @Override
         protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(JavavilleApplication.class);
-        }
+        }*/
 }
