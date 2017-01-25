@@ -6,6 +6,7 @@
 package com.javaville.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,6 +17,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.util.Date;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -29,6 +32,7 @@ public class CategoryItem implements Serializable {
     private Long id;
     private String description;
     private String name;
+    private Date date;
     
     @ManyToOne
     private Category category;
@@ -60,6 +64,15 @@ public class CategoryItem implements Serializable {
     
      public void setPost(Post post){
         this.post.add(post);
+    }
+     
+    public void setDate(Date date){
+        this.date=date;
+    } 
+    @NotNull
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    public Date getDate(){
+        return date;
     }
     
     @JsonIgnore

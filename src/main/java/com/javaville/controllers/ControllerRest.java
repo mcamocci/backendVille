@@ -1,11 +1,13 @@
 package com.javaville.controllers;
 import com.javaville.daos.CategoryDao;
+import com.javaville.daos.CategoryItemDao;
 import com.javaville.daos.PostsDao;
 import com.javaville.daos.UploaderDao;
 import com.javaville.daos.VisiterDao;
 import com.javaville.entities.Category;
 import com.javaville.entities.CategoryItem;
 import com.javaville.entities.Comment;
+import com.javaville.entities.LogItem;
 import com.javaville.entities.Post;
 import com.javaville.entities.Resource;
 import com.javaville.entities.Uploader;
@@ -14,8 +16,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import javax.annotation.Resources;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -47,7 +47,11 @@ public class ControllerRest {
     private EntityManager entityManager;
     
     @Autowired
+    CategoryItemDao categoryItemDao;
+    
+    @Autowired
     PostsDao postDao;
+    
     
     @Autowired
     CategoryDao categoryDao;
@@ -70,13 +74,28 @@ public class ControllerRest {
         return list;
     
     }
-    
+     
     @RequestMapping("/category/{name}")
-    public List<Category> getAllCategory(@PathVariable("name") String name){
-    
+    public List<Category> getAllCategory(@PathVariable("name") String name){    
         List<Category> cats=(List<Category>) categoryDao.findAllByName(name);        
-        return cats;
+        return cats;    
+    }
     
+    @RequestMapping("/saveDemo")
+    public void saveDemo(){
+    
+        Uploader uploader=new Uploader();
+        uploader.setEmail("mcamocci@gmail.com");
+        uploader.setName("Emmanuel");
+        uploader.setPassword(new BCryptPasswordEncoder().encode("mypassword"));
+        
+        uploaderDao.save(uploader);
+        
+    }
+    
+    @RequestMapping("/getUploaders")
+    public List<Uploader> getUploaders(){
+        return (List<Uploader>) uploaderDao.findAll();
     }
     
     @RequestMapping("/categories/{page}/{items}")
@@ -442,4 +461,52 @@ public class ControllerRest {
         
     }
     
+    @RequestMapping("/getPost")
+    public List<Post> getPosts(){
+        List<Post> posts=(List<Post>)postDao.findAll();
+        return posts;
+    }
+    
+    @RequestMapping("/post/{item}")
+    public List<Post> getPosts(@PathVariable("item") String item){
+        
+        CategoryItem categoryItem=categoryItemDao.findByName(item);
+        Long id=categoryItem.getId();
+        
+        Query query=entityManager.createQuery("from Post where category_item_id=:id");
+        query.setParameter("id", id);
+        query.setFirstResult(0);
+        query.setMaxResults(2);
+        
+        List<Post> posts=(List<Post>)query.getResultList();
+        
+        return posts;
+    }
+    
+    @RequestMapping("/resource/{id}")
+    public List<Resource> getResources(@PathVariable("id") Long id){       
+        Post post=postDao.findOne(id);
+        Query query=entityManager.createQuery("from Resource where post_id=:id");   
+        query.setParameter("id", id);
+        List<Resource> list=(List<Resource>)query.getResultList();        
+        return list;
+    }
+    
+    
+    //search functionality
+    
+    
+    @RequestMapping("/logdata")
+    @Transactional
+    public void logdata(HttpServletRequest request){
+        LogItem item=new LogItem();
+        
+        item.setPhoneNumber(request.getParameter("phone"));
+        item.setStatus(request.getParameter("status"));
+        item.setTimeCalled(request.getParameter("ringing"));
+        item.setTimeAccepted(request.getParameter("accepted"));
+        item.setTimeEnded(request.getParameter("ended"));
+        
+        entityManager.persist(item);
+    }
 }

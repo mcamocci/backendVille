@@ -6,6 +6,7 @@
 package com.javaville.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -52,6 +54,7 @@ public class Post implements Serializable {
         this.date = date;
     }
 
+    @JsonIgnore
     public Uploader getPoster() {
         return uploader;
     }
@@ -65,23 +68,27 @@ public class Post implements Serializable {
     private Long id;
     private String content;
     
-    @Column(nullable=false,unique=false)
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm a z")
+    @NotNull
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date date;
     
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="poster_id")
     private Uploader uploader;
     
     @OneToMany(mappedBy="post")
+    @JsonIgnore
     private Collection<Comment> comments=new ArrayList();
     
     @JsonManagedReference
     @ManyToOne 
+    @JsonIgnore
     private CategoryItem categoryItem;
     
     @OneToMany(mappedBy="post")
+    @JsonIgnore        
     Collection<Resource> resources=new ArrayList();
     
     public void addResource(Resource resource){

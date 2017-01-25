@@ -6,6 +6,7 @@
 package com.javaville.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
@@ -31,6 +32,7 @@ public class Resource implements Serializable {
     private String type;
     
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="post_id")
     private Post post;
     
