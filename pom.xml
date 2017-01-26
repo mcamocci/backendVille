@@ -38,6 +38,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+       
+        <!-- tag::actuator[] -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!-- end::actuator[] -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -64,7 +71,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.8.4</version>
             <type>jar</type>
         </dependency>
     </dependencies>
@@ -74,22 +80,11 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-       <plugin>
-              <groupId>com.google.appengine</groupId>
-                <artifactId>gcloud-maven-plugin</artifactId>
-                <version>2.0.9.121.v20160815</version>
-      </plugin>
-       <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <plugin>
+                   <groupId>com.google.appengine</groupId>
+                     <artifactId>gcloud-maven-plugin</artifactId>
+                     <version>2.0.9.121.v20160815</version>
+           </plugin>        
         </plugins>
     </build>
     <repositories>
